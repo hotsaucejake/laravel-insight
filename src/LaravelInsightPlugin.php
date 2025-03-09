@@ -2,11 +2,10 @@
 
 namespace LaravelInsight;
 
-use Filament\Contracts\Plugin;
 use Filament\Panel;
-use LaravelInsight\Models\DiscoveredModel;
+use LaravelInsight\Resources\DiscoveredModelResource;
 
-class LaravelInsightPlugin implements Plugin
+class LaravelInsightPlugin implements \Filament\Contracts\Plugin
 {
     public function getId(): string
     {
@@ -16,7 +15,7 @@ class LaravelInsightPlugin implements Plugin
     public function register(Panel $panel): void
     {
         $panel->resources([
-            DiscoveredModel::class,
+            DiscoveredModelResource::class,
         ]);
     }
 

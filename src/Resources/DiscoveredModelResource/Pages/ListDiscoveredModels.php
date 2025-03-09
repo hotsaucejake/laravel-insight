@@ -2,8 +2,8 @@
 
 namespace LaravelInsight\Resources\DiscoveredModelResource\Pages;
 
-use App\Filament\Admin\Resources\DiscoveredModelResource;
 use Filament\Resources\Pages\ListRecords;
+use LaravelInsight\Resources\DiscoveredModelResource;
 
 class ListDiscoveredModels extends ListRecords
 {
