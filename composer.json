@@ -16,8 +16,6 @@
         }
     },
     "require": {
-        "php": "^8.1",
-        "filament/filament": "^3.0",
-        "illuminate/support": "^10.0"
+        "filament/filament": "^3.0"
     }
 }
