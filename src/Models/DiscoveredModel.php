@@ -4,7 +4,6 @@ namespace LaravelInsight\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use LaravelInsight\Traits\ArrayDriver;
 
@@ -26,18 +25,14 @@ class DiscoveredModel extends Model
                 continue;
             }
 
-//            Log::info('Files', ['files' => File::files($path)]);
-
             // Scan only the files directly in $path (non-recursively)
             foreach (File::files($path) as $file) {
                 // Only process PHP files.
-//                Log::info('extension', ['extension' => $file->getExtension()]);
                 if ($file->getExtension() !== 'php') {
                     continue;
                 }
 
                 $realPath = $file->getRealPath();
-//                Log::info('Real Path', ['realPath' => $realPath]);
                 if (!$realPath || in_array($realPath, $processedFiles)) {
                     continue;
                 }
@@ -45,10 +40,8 @@ class DiscoveredModel extends Model
 
                 // Parse the file to extract the fully qualified class name.
                 $class = self::getClassFromFile($realPath);
-//                Log::info('Class', ['class' => $class]);
                 // If we found a class and the file declares it extends Model, add it.
                 if ($class && self::fileExtendsModel($realPath)) {
-//                    Log::info('Adding Model', ['class' => $class]);
                     $models[] = ['class' => $class];
                 }
             }
@@ -97,6 +90,7 @@ class DiscoveredModel extends Model
         if ($class !== '') {
             return $namespace ? $namespace . '\\' . $class : $class;
         }
+
         return null;
     }
 
@@ -115,10 +109,8 @@ class DiscoveredModel extends Model
             if (is_array($token)) {
                 if ($token[0] === T_CLASS) {
                     $foundClass = true;
-                    Log::debug('T_CLASS found', ['token' => $token]);
                 }
                 if ($foundClass && $token[0] === T_EXTENDS) {
-                    Log::debug('T_EXTENDS found', ['token' => $token]);
                     $i++;
                     // Skip whitespace and comments.
                     while ($i < $count) {
@@ -126,10 +118,10 @@ class DiscoveredModel extends Model
                         if (is_array($current)) {
                             if (in_array($current[0], [T_WHITESPACE, T_COMMENT, T_DOC_COMMENT])) {
                                 $i++;
+
                                 continue;
                             }
                             if (in_array($current[0], [T_STRING, T_NS_SEPARATOR])) {
-                                \Log::debug('Appending token', ['token' => $current]);
                                 $extends .= $current[1];
                             } else {
                                 break;
@@ -144,13 +136,11 @@ class DiscoveredModel extends Model
             }
         }
         if ($extends) {
-            Log::info('Extracted parent class', ['extends' => $extends]);
             $extends = ltrim($extends, '\\');
+
             return $extends === 'Model' || $extends === 'Illuminate\Database\Eloquent\Model';
         }
-        Log::info('No T_EXTENDS found in file', ['file' => $file]);
+
         return false;
     }
-
-
 }
