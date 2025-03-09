@@ -1,0 +1,23 @@
+{
+    "name": "hotsaucejake/laravel-insight",
+    "description": "Filament Laravel Insight - Provides insights about your Laravel application within a FilamentPHP panel",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "LaravelInsight\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "LaravelInsight\\LaravelInsightServiceProvider"
+            ]
+        }
+    },
+    "require": {
+        "php": "^8.1",
+        "filament/filament": "^3.0",
+        "illuminate/support": "^10.0"
+    }
+}
